@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scholars K-12 — School Management System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f6fb;
+  --white: #ffffff;
+  --sidebar: #ffffff;
+  --border: #e8ecf4;
+  --border2: #d4dae8;
+
+  --ink: #111827;
+  --ink2: #4b5563;
+  --ink3: #9ca3af;
+
+  --blue: #2563eb;
+  --blue-light: #eff4ff;
+  --blue-mid: #bfcffd;
+
+  --teal: #0d9488;
+  --teal-light: #f0fdfb;
+
+  --amber: #d97706;
+  --amber-light: #fffbeb;
+
+  --rose: #e11d48;
+  --rose-light: #fff1f5;
+
+  --violet: #7c3aed;
+  --violet-light: #f5f3ff;
+
+  --emerald: #059669;
+  --emerald-light: #ecfdf5;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow: 0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  font-size: 14px;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 10px; }
+
+/* ═══════════════════════════════
+   SIDEBAR
+═══════════════════════════════ */
+.sidebar {
+  width: 248px;
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+.logo-area {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-mark {
+  width: 38px; height: 38px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+  flex-shrink: 0;
+}
+
+.logo-wordmark {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.logo-wordmark small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--ink3);
+  letter-spacing: 0.3px;
+  font-style: normal;
+}
+
+.nav-section { padding: 12px 0 0; }
+
+.nav-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--ink3);
+  padding: 0 16px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  cursor: pointer;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink2);
+  border-radius: 0;
+  margin: 1px 8px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s;
+  position: relative;
+}
+
+.nav-item:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.nav-item.active {
+  background: var(--blue-light);
+  color: var(--blue);
+  font-weight: 600;
+}
+
+.nav-item.active .nav-icon { color: var(--blue); }
+
+.nav-icon {
+  font-size: 17px;
+  width: 22px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-badge {
+  margin-left: auto;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--rose-light);
+  color: var(--rose);
+}
+.nav-badge.amber { background: var(--amber-light); color: var(--amber); }
+.nav-badge.emerald { background: var(--emerald-light); color: var(--emerald); }
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.sidebar-footer:hover { background: var(--bg); }
+
+.user-ava {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), var(--violet));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+.user-name { font-size: 13px; font-weight: 600; }
+.user-role { font-size: 11px; color: var(--ink3); }
+.user-settings { margin-left: auto; font-size: 17px; opacity: 0.4; }
+
+/* ═══════════════════════════════
+   MAIN
+═══════════════════════════════ */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+/* TOPBAR */
+.topbar {
+  height: 60px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 14px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.topbar-title {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 700;
+  flex: 1;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 7px 13px;
+  width: 250px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-wrap:focus-within {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+}
+.search-wrap input {
+  border: none; background: none; outline: none;
+  font-family: inherit; font-size: 13px; color: var(--ink);
+  width: 100%;
+}
+.search-wrap input::placeholder { color: var(--ink3); }
+.search-icon { color: var(--ink3); font-size: 15px; }
+
+.topbar-btn {
+  width: 38px; height: 38px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  color: var(--ink2);
+  font-size: 17px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+}
+.topbar-btn:hover { background: var(--bg); border-color: var(--border2); }
+.notif-pip::after {
+  content: '';
+  position: absolute; top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  background: var(--rose);
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* DATE CHIP */
+.date-chip {
+  font-size: 12px; font-weight: 500; color: var(--ink3);
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 20px; padding: 5px 12px; white-space: nowrap;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 26px 28px;
+}
+
+/* ═══════════════════════════════
+   PAGES
+═══════════════════════════════ */
+.page { display: none; animation: fadeUp 0.28s cubic-bezier(.4,0,.2,1); }
+.page.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════════════
+   CARDS
+═══════════════════════════════ */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.card-hd {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.card-title {
+  font-size: 14.5px; font-weight: 700; color: var(--ink);
+}
+.card-sub { font-size: 12px; color: var(--ink3); margin-top: 2px; }
+.card-link {
+  font-size: 12px; font-weight: 600; color: var(--blue);
+  cursor: pointer; text-decoration: none;
+}
+.card-link:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════
+   STAT CARDS
+═══════════════════════════════ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, transform 0.2s;
+  cursor: default;
+}
+.kpi-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+
+.kpi-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.kpi-icon {
+  width: 42px; height: 42px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+}
+.kpi-icon.blue { background: var(--blue-light); }
+.kpi-icon.teal { background: var(--teal-light); }
+.kpi-icon.amber { background: var(--amber-light); }
+.kpi-icon.violet { background: var(--violet-light); }
+
+.kpi-delta {
+  font-size: 11.5px; font-weight: 600;
+  padding: 3px 8px; border-radius: 20px;
+}
+.kpi-delta.up { background: var(--emerald-light); color: var(--emerald); }
+.kpi-delta.down { background: var(--rose-light); color: var(--rose); }
+
+.kpi-val {
+  font-family: 'Fraunces', serif;
+  font-size: 30px; font-weight: 700; line-height: 1;
+  color: var(--ink);
+}
+.kpi-label { font-size: 12px; color: var(--ink3); margin-top: 4px; }
+
+/* ═══════════════════════════════
+   GRID LAYOUTS
+═══════════════════════════════ */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g3 { display: grid; grid-template-columns: 3fr 2fr; gap: 16px; }
+.g3r { display: grid; grid-template-columns: 2fr 3fr; gap: 16px; }
+.mb16 { margin-bottom: 16px; }
+.mb22 { margin-bottom: 22px; }
+
+/* ═══════════════════════════════
+   TABLE
+═══════════════════════════════ */
+.tbl-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; }
+
+thead th {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.7px;
+  text-transform: uppercase; color: var(--ink3);
+  padding: 0 14px 12px; text-align: left; white-space: nowrap;
+}
+
+tbody td {
+  padding: 11px 14px; font-size: 13.5px;
+  border-top: 1px solid var(--border);
+  color: var(--ink2);
+}
+tbody tr:hover td { background: #fafbff; }
+
+.cell-name { font-weight: 600; color: var(--ink) !important; display: flex; align-items: center; gap: 9px; }
+
+.ava {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11.5px; font-weight: 700; flex-shrink: 0;
+}
+
+/* ═══════════════════════════════
+   BADGES / PILLS
+═══════════════════════════════ */
+.pill {
+  display: inline-block; padding: 3px 10px;
+  border-radius: 20px; font-size: 11.5px; font-weight: 600;
+}
+.pill.active { background: var(--emerald-light); color: var(--emerald); }
+.pill.inactive { background: var(--rose-light); color: var(--rose); }
+.pill.pending { background: var(--amber-light); color: var(--amber); }
+.pill.blue { background: var(--blue-light); color: var(--blue); }
+.pill.violet { background: var(--violet-light); color: var(--violet); }
+.pill.leave { background: #f3f4f6; color: var(--ink3); }
+
+/* ═══════════════════════════════
+   BUTTONS
+═══════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: var(--radius-sm);
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; border: none; font-family: inherit;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--blue); color: white;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+}
+.btn-primary:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,0.35); }
+
+.btn-outline {
+  background: white; color: var(--ink2);
+  border: 1.5px solid var(--border2);
+}
+.btn-outline:hover { background: var(--bg); color: var(--ink); }
+
+.btn-ghost { background: transparent; color: var(--blue); padding: 6px 10px; }
+.btn-ghost:hover { background: var(--blue-light); }
+
+.btn-danger-ghost { background: transparent; color: var(--rose); padding: 6px 10px; }
+.btn-danger-ghost:hover { background: var(--rose-light); }
+
+/* ═══════════════════════════════
+   PROGRESS BAR
+═══════════════════════════════ */
+.prog-bar {
+  height: 7px;
+  background: var(--bg);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.prog-fill {
+  height: 100%; border-radius: 10px;
+  background: linear-gradient(90deg, var(--blue), #60a5fa);
+  transition: width 0.8s ease;
+}
+.prog-fill.emerald { background: linear-gradient(90deg, var(--teal), #34d399); }
+.prog-fill.amber { background: linear-gradient(90deg, var(--amber), #fbbf24); }
+.prog-fill.rose { background: linear-gradient(90deg, var(--rose), #fb7185); }
+
+/* ═══════════════════════════════
+   WELCOME BANNER
+═══════════════════════════════ */
+.welcome {
+  background: linear-gradient(120deg, #1e40af 0%, #2563eb 50%, #0d9488 100%);
+  border-radius: var(--radius-lg);
+  padding: 26px 32px;
+  margin-bottom: 22px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(37,99,235,0.25);
+}
+.welcome::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.welcome-emoji {
+  font-size: 48px; line-height: 1; z-index: 1;
+}
+.welcome-text { flex: 1; z-index: 1; }
+.welcome-title {
+  font-family: 'Fraunces', serif;
+  font-size: 22px; font-weight: 700; margin-bottom: 4px;
+}
+.welcome-sub { font-size: 13px; opacity: 0.8; }
+.welcome-actions { display: flex; gap: 10px; z-index: 1; }
+.btn-white {
+  background: rgba(255,255,255,0.15); color: white;
+  border: 1.5px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px);
+}
+.btn-white:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+/* ═══════════════════════════════
+   QUICK ACTIONS
+═══════════════════════════════ */
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.qa-card {
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+  box-shadow: var(--shadow-sm);
+}
+.qa-card:hover {
+  border-color: var(--blue);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.12);
+  transform: translateY(-2px);
+}
+.qa-icon { font-size: 22px; margin-bottom: 6px; }
+.qa-label { font-size: 12px; font-weight: 600; color: var(--ink2); }
+
+/* ═══════════════════════════════
+   SCHEDULE
+═══════════════════════════════ */
+.sched-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.sched-item:last-child { border: none; }
+.sched-time { font-size: 11.5px; font-weight: 600; color: var(--ink3); width: 72px; flex-shrink: 0; }
+.sched-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.sched-body { flex: 1; }
+.sched-name { font-size: 13.5px; font-weight: 600; }
+.sched-room { font-size: 12px; color: var(--ink3); }
+.sched-teacher { font-size: 12px; color: var(--ink3); margin-left: auto; text-align: right; }
+
+/* ═══════════════════════════════
+   ATTENDANCE CHART
+═══════════════════════════════ */
+.att-chart { display: flex; align-items: flex-end; gap: 12px; height: 120px; }
+.att-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.att-bar {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, var(--blue) 0%, #93c5fd 100%);
+  transition: height 0.7s cubic-bezier(.4,0,.2,1);
+  cursor: pointer;
+  min-height: 4px;
+}
+.att-bar:hover { filter: brightness(0.9); }
+.att-pct { font-size: 11px; font-weight: 700; color: var(--blue); }
+.att-day { font-size: 11px; color: var(--ink3); font-weight: 500; }
+
+/* ═══════════════════════════════
+   NOTICES
+═══════════════════════════════ */
+.notice-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  gap: 13px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s;
+}
+.notice-card:hover { box-shadow: var(--shadow); }
+.notice-icon-box {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; flex-shrink: 0;
+}
+.notice-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.notice-body { font-size: 12.5px; color: var(--ink2); line-height: 1.5; }
+.notice-meta { font-size: 11px; color: var(--ink3); margin-top: 5px; }
+
+/* ═══════════════════════════════
+   FEE ITEMS
+═══════════════════════════════ */
+.fee-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 16px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin-bottom: 10px;
+  transition: background 0.15s;
+}
+.fee-row:hover { background: #f0f4ff; }
+.fee-stu { font-weight: 600; font-size: 13.5px; }
+.fee-type { font-size: 12px; color: var(--ink3); margin-top: 1px; }
+.fee-amt { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-left: auto; }
+
+/* ═══════════════════════════════
+   TIMETABLE
+═══════════════════════════════ */
+.ttbl { width: 100%; border-collapse: separate; border-spacing: 3px; }
+.ttbl th {
+  font-size: 11.5px; font-weight: 700; color: var(--ink3);
+  padding: 8px 10px; text-align: center; letter-spacing: 0.4px;
+  background: var(--bg); border-radius: 6px;
+}
+.ttbl td {
+  padding: 0; border: none; border-radius: 8px; overflow: hidden;
+}
+.tt-cell {
+  padding: 9px 8px; text-align: center;
+  font-size: 11.5px; font-weight: 600;
+  border-radius: 8px; cursor: pointer;
+  transition: filter 0.15s, transform 0.15s;
+  line-height: 1.3;
+}
+.tt-cell:hover { filter: brightness(0.93); transform: scale(1.02); }
+.tt-cell .tt-teacher { font-size: 10px; font-weight: 400; opacity: 0.7; display: block; margin-top: 2px; }
+.tt-math { background: var(--blue-light); color: var(--blue); }
+.tt-sci { background: var(--teal-light); color: var(--teal); }
+.tt-eng { background: var(--amber-light); color: var(--amber); }
+.tt-hist { background: var(--rose-light); color: var(--rose); }
+.tt-pe { background: var(--violet-light); color: var(--violet); }
+.tt-art { background: #fdf4ff; color: #a21caf; }
+.tt-break { background: #f9fafb; color: var(--ink3); font-style: italic; font-size: 11px; }
+
+/* ═══════════════════════════════
+   SUBJECT GRADES
+═══════════════════════════════ */
+.subj-row { margin-bottom: 16px; }
+.subj-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 6px;
+}
+.subj-name { font-size: 13.5px; font-weight: 600; }
+.subj-score { font-size: 13.5px; font-weight: 700; }
+
+/* ═══════════════════════════════
+   MODAL
+═══════════════════════════════ */
+.overlay {
+  position: fixed; inset: 0;
+  background: rgba(17,24,39,0.35);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.overlay.open { display: flex; }
+
+.modal {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  width: 520px;
+  max-width: 92vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: modalPop 0.22s cubic-bezier(.4,0,.2,1);
+}
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.94) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-title {
+  font-family: 'Fraunces', serif;
+  font-size: 20px; font-weight: 700;
+  margin-bottom: 22px;
+  display: flex; align-items: center; gap: 10px;
+}
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 24px; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.fg { display: flex; flex-direction: column; gap: 6px; }
+.fg.full { grid-column: 1 / -1; }
+.fl { font-size: 12px; font-weight: 600; color: var(--ink2); }
+.fi {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  color: var(--ink);
+  font-family: inherit; font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.fi:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+.fi option { background: white; }
+
+/* PAGE HEADER */
+.pg-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 22px;
+}
+.pg-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; }
+.pg-sub { font-size: 12.5px; color: var(--ink3); margin-top: 2px; }
+
+/* RESULT TABLE COLORS */
+.grade-a { color: var(--emerald); font-weight: 700; }
+.grade-b { color: var(--blue); font-weight: 700; }
+.grade-c { color: var(--amber); font-weight: 700; }
+.grade-d { color: var(--rose); font-weight: 700; }
+
+/* ATT TOGGLE */
+.att-toggle {
+  width: 28px; height: 28px;
+  border-radius: 50%; border: none; cursor: pointer;
+  font-size: 15px; display: inline-flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.att-toggle.present { background: var(--emerald-light); }
+.att-toggle.absent { background: var(--rose-light); }
+
+/* SECTION TITLE */
+.section-hd {
+  font-size: 14.5px; font-weight: 700; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* SELECT FILTER */
+.fselect {
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 7px 12px;
+  font-family: inherit; font-size: 13px; color: var(--ink);
+  outline: none; cursor: pointer;
+}
+.fselect:focus { border-color: var(--blue); }
+
+/* INLINE NOTICE FORM */
+.inline-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+}
+
+/* FEE STATS */
+.fee-kpi { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+.fee-kpi-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.fkc-val { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+.fkc-label { font-size: 12px; color: var(--ink3); margin-top: 3px; }
+
+/* LEGEND DOTS */
+.legend { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink2); }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- ═════════════════════════════════════════════
+     SIDEBAR
+═════════════════════════════════════════════ -->
+<aside class="sidebar">
+  <div class="logo-area">
+    <div class="logo-mark">🎓</div>
+    <div class="logo-wordmark">
+      Scholars
+      <small>K-12 Management System</small>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" data-page="dashboard">
+      <span class="nav-icon">🏠</span> Dashboard
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">People</div>
+    <div class="nav-item" data-page="students">
+      <span class="nav-icon">🎒</span> Students
+      <span class="nav-badge emerald">1,248</span>
+    </div>
+    <div class="nav-item" data-page="teachers">
+      <span class="nav-icon">👩‍🏫</span> Teachers & Staff
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Academics</div>
+    <div class="nav-item" data-page="attendance">
+      <span class="nav-icon">✅</span> Attendance
+      <span class="nav-badge amber">3</span>
+    </div>
+    <div class="nav-item" data-page="grades">
+      <span class="nav-icon">📊</span> Grades & Results
+    </div>
+    <div class="nav-item" data-page="timetable">
+      <span class="nav-icon">🗓️</span> Timetable
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Administration</div>
+    <div class="nav-item" data-page="fees">
+      <span class="nav-icon">💳</span> Fee Management
+      <span class="nav-badge">12</span>
+    </div>
+    <div class="nav-item" data-page="notices">
+      <span class="nav-icon">📢</span> Notices
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="user-ava">AD</div>
+    <div>
+      <div class="user-name">Admin User</div>
+      <div class="user-role">School Administrator</div>
+    </div>
+    <span class="user-settings">⚙️</span>
+  </div>
+</aside>
+
+<!-- ═════════════════════════════════════════════
+     MAIN
+═════════════════════════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-title" id="topTitle">Dashboard</div>
+    <span class="date-chip">📅 Tue, Feb 17, 2026</span>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search students, staff…" id="searchInput" oninput="handleSearch(this.value)">
+    </div>
+    <button class="topbar-btn notif-pip" title="Notifications">🔔</button>
+    <button class="topbar-btn" title="Help">❓</button>
+    <button class="topbar-btn" title="Fullscreen" onclick="toggleFS()">⛶</button>
+  </header>
+
+  <div class="content">
+
+    <!-- ═══════════════════ DASHBOARD ═══════════════════ -->
+    <div class="page active" id="page-dashboard">
+
+      <div class="welcome">
+        <div class="welcome-emoji">👋</div>
+        <div class="welcome-text">
+          <div class="welcome-title">Good Morning, Admin!</div>
+          <div class="welcome-sub">Spring Semester 2026 · Week 7 · 94.3% attendance today</div>
+        </div>
+        <div class="welcome-actions">
+          <button class="btn btn-white" onclick="goto('students')">➕ Enroll Student</button>
+          <button class="btn btn-white" onclick="goto('notices')">📢 Post Notice</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon blue">🎒</div>
+            <span class="kpi-delta up">↑ 4.2%</span>
+          </div>
+          <div class="kpi-val">1,248</div>
+          <div class="kpi-label">Total Students</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon teal">👩‍🏫</div>
+            <span class="kpi-delta up">↑ 2 new</span>
+          </div>
+          <div class="kpi-val">86</div>
+          <div class="kpi-label">Teaching Staff</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon amber">✅</div>
+            <span class="kpi-delta up">↑ 1.1%</span>
+          </div>
+          <div class="kpi-val">94.3%</div>
+          <div class="kpi-label">Today's Attendance</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-top">
+            <div class="kpi-icon violet">💳</div>
+            <span class="kpi-delta down">12 due</span>
+          </div>
+          <div class="kpi-val">$48.2k</div>
+          <div class="kpi-label">Fees Pending</div>
+        </div>
+      </div>
+
+      <div class="quick-grid">
+        <div class="qa-card" onclick="openModal('addStudent')">
+          <div class="qa-icon">➕</div>
+          <div class="qa-label">Add Student</div>
+        </div>
+        <div class="qa-card" onclick="openModal('addTeacher')">
+          <div class="qa-icon">👨‍🏫</div>
+          <div class="qa-label">Add Staff</div>
+        </div>
+        <div class="qa-card" onclick="goto('attendance')">
+          <div class="qa-icon">📋</div>
+          <div class="qa-label">Attendance</div>
+        </div>
+        <div class="qa-card" onclick="goto('fees')">
+          <div class="qa-icon">💸</div>
+          <div class="qa-label">Fee Reminder</div>
+        </div>
+        <div class="qa-card" onclick="goto('grades')">
+          <div class="qa-icon">📊</div>
+          <div class="qa-label">View Results</div>
+        </div>
+      </div>
+
+      <div class="g3 mb16">
+        <div class="card">
+          <div class="card-hd">
+            <div>
+              <div class="card-title">Recent Enrollments</div>
+              <div class="card-sub">Latest added students</div>
+            </div>
+            <a class="card-link" onclick="goto('students')">View all →</a>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr><th>Student</th><th>Class</th><th>GPA</th><th>Status</th></tr>
+              </thead>
+              <tbody id="dashStudents"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-hd">
+            <div>
+              <div class="card-title">Today's Schedule</div>
+              <div class="card-sub">Grade 10-A classes</div>
+            </div>
+            <a class="card-link" onclick="goto('timetable')">Full →</a>
+          </div>
+          <div id="dashSchedule"></div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-hd">
+            <div class="card-title">Weekly Attendance</div>
+          </div>
+          <div class="att-chart" id="attChart"></div>
+          <div style="display:flex;justify-content:space-around;margin-top:8px;" id="attDays"></div>
+        </div>
+        <div class="card">
+          <div class="card-hd">
+            <div class="card-title">Fee Collection Progress</div>
+          </div>
+          <div id="feeProgress"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ STUDENTS ═══════════════════ -->
+    <div class="page" id="page-students">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Students & Enrollment</div>
+          <div class="pg-sub" id="stuCount">1,248 total enrolled students</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <select class="fselect" id="classFilter" onchange="filterStudents()">
+            <option value="">All Classes</option>
+            <option>Grade 9</option><option>Grade 10</option>
+            <option>Grade 11</option><option>Grade 12</option>
+          </select>
+          <button class="btn btn-primary" onclick="openModal('addStudent')">➕ Add Student</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th><th>Student ID</th><th>Class</th>
+                <th>Phone</th><th>GPA</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ TEACHERS ═══════════════════ -->
+    <div class="page" id="page-teachers">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Teachers & Staff</div>
+          <div class="pg-sub">86 active members across all departments</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('addTeacher')">➕ Add Staff Member</button>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th><th>Staff ID</th><th>Subject</th>
+                <th>Classes</th><th>Experience</th><th>Status</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="teachersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ ATTENDANCE ═══════════════════ -->
+    <div class="page" id="page-attendance">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Attendance Tracking</div>
+          <div class="pg-sub">Mark & manage daily student attendance</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <select class="fselect">
+            <option>Grade 10-A</option>
+            <option>Grade 10-B</option>
+            <option>Grade 11-A</option>
+          </select>
+          <button class="btn btn-primary">💾 Save Attendance</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th><th>Roll</th>
+                <th>Mon 13</th><th>Tue 14</th><th>Wed 15</th><th>Thu 16</th><th>Fri 17</th>
+                <th>This Week %</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ GRADES ═══════════════════ -->
+    <div class="page" id="page-grades">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Grades & Results</div>
+          <div class="pg-sub">Spring Semester 2026 · Mid-Term Assessment</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <select class="fselect"><option>Spring 2026</option><option>Fall 2025</option></select>
+          <button class="btn btn-primary">📤 Export PDF</button>
+        </div>
+      </div>
+      <div class="g2 mb16">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:18px;">Subject Performance Avg.</div>
+          <div id="subjProgress"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:18px;">🏆 Top Performers</div>
+          <table>
+            <thead><tr><th>Rank</th><th>Student</th><th>Class</th><th>GPA</th></tr></thead>
+            <tbody id="topPerformers"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">All Student Results</div>
+          <select class="fselect"><option>All Classes</option><option>Grade 10</option><option>Grade 11</option></select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Student</th><th>Math</th><th>Science</th><th>English</th><th>History</th><th>Total /400</th><th>Grade</th></tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ TIMETABLE ═══════════════════ -->
+    <div class="page" id="page-timetable">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Class Timetable</div>
+          <div class="pg-sub">Spring 2026 Weekly Schedule</div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <select class="fselect"><option>Grade 10-A</option><option>Grade 11-B</option><option>Grade 12-A</option></select>
+          <button class="btn btn-primary">✏️ Edit Schedule</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="tbl-wrap" id="timetableWrap"></div>
+        <div class="legend" style="margin-top:16px;">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--blue-light);border:1.5px solid var(--blue)"></div>Mathematics</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--teal-light);border:1.5px solid var(--teal)"></div>Science</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--amber-light);border:1.5px solid var(--amber)"></div>English</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--rose-light);border:1.5px solid var(--rose)"></div>History</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--violet-light);border:1.5px solid var(--violet)"></div>P.E.</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#fdf4ff;border:1.5px solid #a21caf"></div>Art</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ FEES ═══════════════════ -->
+    <div class="page" id="page-fees">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Fee Management</div>
+          <div class="pg-sub">Spring 2026 — 86.7% collection rate</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('addFee')">➕ Add Fee Record</button>
+      </div>
+      <div class="fee-kpi">
+        <div class="fee-kpi-card">
+          <div style="font-size:20px;margin-bottom:6px;">💚</div>
+          <div class="fkc-val" style="color:var(--emerald)">$312,400</div>
+          <div class="fkc-label">Collected This Month</div>
+        </div>
+        <div class="fee-kpi-card">
+          <div style="font-size:20px;margin-bottom:6px;">⏳</div>
+          <div class="fkc-val" style="color:var(--amber)">$48,200</div>
+          <div class="fkc-label">Pending</div>
+        </div>
+        <div class="fee-kpi-card">
+          <div style="font-size:20px;margin-bottom:6px;">📊</div>
+          <div class="fkc-val" style="color:var(--blue)">86.7%</div>
+          <div class="fkc-label">Collection Rate</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">Outstanding Fee Records</div>
+          <span class="pill pending">12 pending</span>
+        </div>
+        <div id="feeList"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════ NOTICES ═══════════════════ -->
+    <div class="page" id="page-notices">
+      <div class="pg-header">
+        <div>
+          <div class="pg-title">Notices & Announcements</div>
+          <div class="pg-sub">Communicate with students and parents</div>
+        </div>
+      </div>
+      <div class="g3r">
+        <div id="noticesList"></div>
+        <div class="inline-card">
+          <div class="card-title" style="margin-bottom:18px;">📢 Post a Notice</div>
+          <div class="fg" style="margin-bottom:12px;">
+            <label class="fl">Title</label>
+            <input class="fi" id="nTitle" placeholder="Notice title…">
+          </div>
+          <div class="fg" style="margin-bottom:12px;">
+            <label class="fl">Category</label>
+            <select class="fi" id="nCat">
+              <option>📢 General</option>
+              <option>🎉 Event</option>
+              <option>⚠️ Important</option>
+              <option>🏖️ Holiday</option>
+              <option>📝 Exam</option>
+            </select>
+          </div>
+          <div class="fg" style="margin-bottom:12px;">
+            <label class="fl">Audience</label>
+            <select class="fi">
+              <option>All Students & Parents</option>
+              <option>Grade 9 Only</option>
+              <option>Grade 10 Only</option>
+              <option>Staff Only</option>
+            </select>
+          </div>
+          <div class="fg" style="margin-bottom:18px;">
+            <label class="fl">Message</label>
+            <textarea class="fi" id="nBody" rows="4" placeholder="Write your announcement here…"></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="postNotice()">
+            📢 Publish Notice
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ═════════════════════ MODALS ═════════════════════ -->
+
+<!-- Add Student -->
+<div class="overlay" id="m-addStudent">
+  <div class="modal">
+    <div class="modal-title">🎒 Enroll New Student</div>
+    <div class="form-grid">
+      <div class="fg"><label class="fl">First Name</label><input class="fi" id="s-fn" placeholder="First name"></div>
+      <div class="fg"><label class="fl">Last Name</label><input class="fi" id="s-ln" placeholder="Last name"></div>
+      <div class="fg"><label class="fl">Date of Birth</label><input class="fi" id="s-dob" type="date"></div>
+      <div class="fg"><label class="fl">Gender</label>
+        <select class="fi" id="s-gen"><option>Male</option><option>Female</option><option>Other</option></select>
+      </div>
+      <div class="fg"><label class="fl">Grade</label>
+        <select class="fi" id="s-grade"><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
+      </div>
+      <div class="fg"><label class="fl">Section</label>
+        <select class="fi" id="s-sec"><option>A</option><option>B</option><option>C</option></select>
+      </div>
+      <div class="fg"><label class="fl">Parent Phone</label><input class="fi" id="s-ph" placeholder="+1 555-0100"></div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" id="s-em" placeholder="student@email.com"></div>
+      <div class="fg full"><label class="fl">Previous School</label><input class="fi" id="s-prev" placeholder="Previous school name (optional)"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addStudent')">Cancel</button>
+      <button class="btn btn-primary" onclick="addStudent()">Enroll Student</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Teacher -->
+<div class="overlay" id="m-addTeacher">
+  <div class="modal">
+    <div class="modal-title">👨‍🏫 Add Staff Member</div>
+    <div class="form-grid">
+      <div class="fg"><label class="fl">Full Name</label><input class="fi" id="t-nm" placeholder="Full name"></div>
+      <div class="fg"><label class="fl">Subject</label>
+        <select class="fi" id="t-sub">
+          <option>Mathematics</option><option>Science</option><option>English</option>
+          <option>History</option><option>P.E.</option><option>Art</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Email</label><input class="fi" id="t-em" placeholder="staff@school.edu"></div>
+      <div class="fg"><label class="fl">Phone</label><input class="fi" id="t-ph" placeholder="+1 555-0200"></div>
+      <div class="fg"><label class="fl">Experience (Years)</label><input class="fi" id="t-exp" type="number" placeholder="0" min="0"></div>
+      <div class="fg"><label class="fl">Qualification</label><input class="fi" id="t-qual" placeholder="M.Ed, B.Sc…"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addTeacher')">Cancel</button>
+      <button class="btn btn-primary" onclick="addTeacher()">Add Staff</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Fee -->
+<div class="overlay" id="m-addFee">
+  <div class="modal">
+    <div class="modal-title">💳 Add Fee Record</div>
+    <div class="form-grid">
+      <div class="fg full"><label class="fl">Student Name</label><input class="fi" id="f-stu" placeholder="Student full name"></div>
+      <div class="fg"><label class="fl">Fee Type</label>
+        <select class="fi" id="f-type">
+          <option>Tuition Fee</option><option>Exam Fee</option>
+          <option>Sports Fee</option><option>Library Fee</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Amount ($)</label><input class="fi" id="f-amt" type="number" placeholder="0.00"></div>
+      <div class="fg"><label class="fl">Due Date</label><input class="fi" id="f-due" type="date"></div>
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fi" id="f-stat"><option>Pending</option><option>Paid</option><option>Overdue</option></select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal('addFee')">Cancel</button>
+      <button class="btn btn-primary" onclick="addFeeRec()">Save Record</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DATA
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const PALETTE = ['#2563eb','#0d9488','#d97706','#7c3aed','#e11d48','#a21caf','#059669','#0284c7'];
+
+const students = [
+  {id:'STU-001',name:'Emma Watson',grade:'Grade 10',sec:'A',phone:'555-0101',gpa:3.9,status:'Active',c:'#2563eb'},
+  {id:'STU-002',name:'Liam Johnson',grade:'Grade 11',sec:'B',phone:'555-0102',gpa:3.6,status:'Active',c:'#0d9488'},
+  {id:'STU-003',name:'Sophia Brown',grade:'Grade 9',sec:'C',phone:'555-0103',gpa:3.2,status:'Active',c:'#059669'},
+  {id:'STU-004',name:'Noah Davis',grade:'Grade 12',sec:'A',phone:'555-0104',gpa:3.8,status:'Active',c:'#d97706'},
+  {id:'STU-005',name:'Olivia Wilson',grade:'Grade 10',sec:'B',phone:'555-0105',gpa:2.9,status:'Inactive',c:'#e11d48'},
+  {id:'STU-006',name:'James Miller',grade:'Grade 11',sec:'A',phone:'555-0106',gpa:3.5,status:'Active',c:'#7c3aed'},
+  {id:'STU-007',name:'Ava Taylor',grade:'Grade 12',sec:'B',phone:'555-0107',gpa:4.0,status:'Active',c:'#0284c7'},
+  {id:'STU-008',name:'Ethan Anderson',grade:'Grade 9',sec:'A',phone:'555-0108',gpa:3.1,status:'Active',c:'#a21caf'},
+  {id:'STU-009',name:'Isabella Thomas',grade:'Grade 10',sec:'A',phone:'555-0109',gpa:3.7,status:'Active',c:'#2563eb'},
+  {id:'STU-010',name:'Mason Martinez',grade:'Grade 11',sec:'C',phone:'555-0110',gpa:2.8,status:'Active',c:'#0d9488'},
+];
+
+const teachers = [
+  {id:'TCH-001',name:'Dr. Sarah Lee',subject:'Mathematics',classes:'Gr. 10, 11',exp:'12 yrs',status:'Active',c:'#2563eb'},
+  {id:'TCH-002',name:'Mr. John Smith',subject:'Science',classes:'Gr. 9, 10',exp:'8 yrs',status:'Active',c:'#0d9488'},
+  {id:'TCH-003',name:'Ms. Emily Clark',subject:'English',classes:'Gr. 11, 12',exp:'15 yrs',status:'Active',c:'#d97706'},
+  {id:'TCH-004',name:'Mr. David Brown',subject:'History',classes:'Gr. 9, 12',exp:'6 yrs',status:'Active',c:'#7c3aed'},
+  {id:'TCH-005',name:'Ms. Rachel Green',subject:'P.E.',classes:'All Grades',exp:'9 yrs',status:'Active',c:'#e11d48'},
+  {id:'TCH-006',name:'Mr. Tom Harris',subject:'Art',classes:'Gr. 10, 11',exp:'5 yrs',status:'On Leave',c:'#a21caf'},
+  {id:'TCH-007',name:'Dr. Priya Nair',subject:'Mathematics',classes:'Gr. 9, 12',exp:'11 yrs',status:'Active',c:'#059669'},
+];
+
+const fees = [
+  {student:'Emma Watson',type:'Tuition Fee',amt:1200,due:'Mar 1',status:'Pending'},
+  {student:'Liam Johnson',type:'Sports Fee',amt:150,due:'Feb 28',status:'Overdue'},
+  {student:'Sophia Brown',type:'Tuition Fee',amt:1200,due:'Mar 1',status:'Pending'},
+  {student:'Noah Davis',type:'Exam Fee',amt:80,due:'Feb 20',status:'Overdue'},
+  {student:'James Miller',type:'Library Fee',amt:40,due:'Mar 5',status:'Pending'},
+  {student:'Ethan Anderson',type:'Tuition Fee',amt:1200,due:'Mar 1',status:'Pending'},
+];
+
+const notices = [
+  {icon:'📝',cat:'Exam',title:'Mid-Term Exam Schedule Announced',body:'Mid-term examinations begin March 3–10, 2026. All students must carry their School ID. Detailed timetable available in the school portal.',date:'Feb 17, 2026',bg:'#eff4ff',bc:'#2563eb'},
+  {icon:'🎉',cat:'Event',title:'Annual Science Fair — Feb 28',body:'The Annual Science Fair is scheduled for Feb 28. Teams must submit project abstracts no later than Feb 22 via the online portal.',date:'Feb 15, 2026',bg:'#f0fdfb',bc:'#0d9488'},
+  {icon:'⚠️',cat:'Important',title:'Fee Submission Deadline Reminder',body:'Last date for fee submission without late penalty is March 1, 2026. After this date, a 10% fine will be applied on outstanding amounts.',date:'Feb 14, 2026',bg:'#fffbeb',bc:'#d97706'},
+  {icon:'🏖️',cat:'Holiday',title:'Spring Break — March 15–22',body:'The school will be closed from March 15–22, 2026 for Spring Break. Regular classes resume on Monday, March 23.',date:'Feb 12, 2026',bg:'#f5f3ff',bc:'#7c3aed'},
+];
+
+const schedule = [
+  {time:'8:00 AM',name:'Mathematics',room:'Room 201',teacher:'Dr. Sarah Lee',color:'#2563eb'},
+  {time:'9:30 AM',name:'Science Lab',room:'Lab 101',teacher:'Mr. John Smith',color:'#0d9488'},
+  {time:'11:00 AM',name:'English Lit.',room:'Room 305',teacher:'Ms. Emily Clark',color:'#d97706'},
+  {time:'12:30 PM',name:'Lunch Break',room:'Cafeteria',teacher:'—',color:'#9ca3af'},
+  {time:'1:30 PM',name:'History',room:'Room 204',teacher:'Mr. David Brown',color:'#e11d48'},
+  {time:'3:00 PM',name:'P.E.',room:'Sports Ground',teacher:'Ms. Rachel Green',color:'#7c3aed'},
+];
+
+const timetable = {
+  slots: ['8:00–9:00','9:00–10:00','10:00–11:00','11:00–11:30','11:30–12:30','12:30–1:30','1:30–2:30'],
+  days: ['Monday','Tuesday','Wednesday','Thursday','Friday'],
+  data: [
+    ['Math|Dr. Lee','English|Ms. Clark','Science|Mr. Smith','Math|Dr. Lee','PE|Ms. Green'],
+    ['Science|Mr. Smith','Math|Dr. Lee','History|Mr. Brown','English|Ms. Clark','Art|Mr. Harris'],
+    ['English|Ms. Clark','History|Mr. Brown','Math|Dr. Lee','Science|Mr. Smith','Math|Dr. Lee'],
+    ['Break','Break','Break','Break','Break'],
+    ['History|Mr. Brown','Science|Mr. Smith','PE|Ms. Green','Art|Mr. Harris','English|Ms. Clark'],
+    ['Art|Mr. Harris','PE|Ms. Green','English|Ms. Clark','History|Mr. Brown','Science|Mr. Smith'],
+    ['PE|Ms. Green','Art|Mr. Harris','Art|Mr. Harris','PE|Ms. Green','History|Mr. Brown'],
+  ]
+};
+
+const subjectClass = {Math:'tt-math',Science:'tt-sci',English:'tt-eng',History:'tt-hist',PE:'tt-pe',Art:'tt-art',Break:'tt-break'};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UTILITIES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function initials(name) {
+  return name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+}
+function gpaColor(g) {
+  return g>=3.7?'var(--emerald)':g>=3.0?'var(--blue)':'var(--amber)';
+}
+function gradeClass(pct) {
+  return pct>=90?'grade-a':pct>=75?'grade-b':pct>=60?'grade-c':'grade-d';
+}
+function gradeLabel(pct) {
+  return pct>=90?'A+':pct>=80?'A':pct>=70?'B+':pct>=60?'B':pct>=50?'C':'D';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// RENDER FUNCTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function renderAll() {
+  renderDashStudents();
+  renderDashSchedule();
+  renderAttChart();
+  renderFeeProgress();
+  renderStudents(students);
+  renderTeachers(teachers);
+  renderAttendance();
+  renderSubjProgress();
+  renderTopPerformers();
+  renderResults();
+  renderTimetable();
+  renderFeeList(fees);
+  renderNotices(notices);
+}
+
+function renderDashStudents() {
+  const el = document.getElementById('dashStudents');
+  el.innerHTML = students.slice(0,6).map(s => `
+    <tr>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${s.c}22;color:${s.c}">${initials(s.name)}</div>
+        ${s.name}
+      </div></td>
+      <td>${s.grade}-${s.sec}</td>
+      <td><strong style="color:${gpaColor(s.gpa)}">${s.gpa}</strong></td>
+      <td><span class="pill ${s.status==='Active'?'active':'inactive'}">${s.status}</span></td>
+    </tr>
+  `).join('');
+}
+
+function renderDashSchedule() {
+  const el = document.getElementById('dashSchedule');
+  el.innerHTML = schedule.slice(0,5).map(s => `
+    <div class="sched-item">
+      <span class="sched-time">${s.time}</span>
+      <span class="sched-dot" style="background:${s.color}"></span>
+      <span class="sched-body">
+        <div class="sched-name">${s.name}</div>
+        <div class="sched-room">${s.room}</div>
+      </span>
+      <span class="sched-teacher">${s.teacher}</span>
+    </div>
+  `).join('');
+}
+
+function renderAttChart() {
+  const data = [{day:'Mon',pct:92},{day:'Tue',pct:94},{day:'Wed',pct:89},{day:'Thu',pct:96},{day:'Fri',pct:94}];
+  const chart = document.getElementById('attChart');
+  const days = document.getElementById('attDays');
+  chart.innerHTML = data.map(d => `
+    <div class="att-col">
+      <div class="att-pct">${d.pct}%</div>
+      <div class="att-bar" style="height:${(d.pct/100)*90}px"></div>
+    </div>
+  `).join('');
+  days.innerHTML = data.map(d => `<span class="att-day">${d.day}</span>`).join('');
+}
+
+function renderFeeProgress() {
+  const items = [
+    {label:'Tuition Fee',pct:82,cls:''},
+    {label:'Exam Fee',pct:95,cls:'emerald'},
+    {label:'Sports Fee',pct:67,cls:'amber'},
+    {label:'Library Fee',pct:71,cls:''},
+  ];
+  document.getElementById('feeProgress').innerHTML = items.map(i => `
+    <div class="subj-row">
+      <div class="subj-top">
+        <span class="subj-name">${i.label}</span>
+        <span class="subj-score" style="color:${i.pct>=80?'var(--emerald)':i.pct>=60?'var(--blue)':'var(--amber)'}">${i.pct}%</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill ${i.cls}" style="width:${i.pct}%"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderStudents(list) {
+  document.getElementById('studentsBody').innerHTML = list.map(s => `
+    <tr>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${s.c}22;color:${s.c}">${initials(s.name)}</div>
+        ${s.name}
+      </div></td>
+      <td style="color:var(--ink3);font-size:12px;">${s.id}</td>
+      <td>${s.grade}-${s.sec}</td>
+      <td style="color:var(--ink3)">${s.phone}</td>
+      <td><strong style="color:${gpaColor(s.gpa)}">${s.gpa}</strong></td>
+      <td><span class="pill ${s.status==='Active'?'active':'inactive'}">${s.status}</span></td>
+      <td>
+        <button class="btn btn-ghost" style="font-size:12px;padding:5px 9px;">View</button>
+        <button class="btn btn-danger-ghost" style="font-size:12px;padding:5px 9px;">Remove</button>
+      </td>
+    </tr>
+  `).join('');
+  document.getElementById('stuCount').textContent = `${list.length} students shown`;
+}
+
+function renderTeachers(list) {
+  document.getElementById('teachersBody').innerHTML = list.map(t => `
+    <tr>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${t.c}22;color:${t.c}">${initials(t.name)}</div>
+        ${t.name}
+      </div></td>
+      <td style="color:var(--ink3);font-size:12px;">${t.id}</td>
+      <td>${t.subject}</td>
+      <td style="color:var(--ink3)">${t.classes}</td>
+      <td>${t.exp}</td>
+      <td><span class="pill ${t.status==='Active'?'active':t.status==='On Leave'?'leave':'inactive'}">${t.status}</span></td>
+      <td>
+        <button class="btn btn-ghost" style="font-size:12px;padding:5px 9px;">Profile</button>
+        <button class="btn btn-ghost" style="font-size:12px;padding:5px 9px;color:var(--amber);">Edit</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderAttendance() {
+  const patterns = [
+    [1,1,1,0,1],[1,1,1,1,1],[1,0,1,1,1],[1,1,0,1,1],[1,1,1,1,0],
+    [0,1,1,1,1],[1,1,1,1,1],[1,1,0,1,1],[1,1,1,0,1],[1,0,1,1,1]
+  ];
+  document.getElementById('attendanceBody').innerHTML = students.map((s,i) => {
+    const pat = patterns[i % patterns.length];
+    const pct = Math.round(pat.reduce((a,b)=>a+b,0)/5*100);
+    return `<tr>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${s.c}22;color:${s.c};width:28px;height:28px;font-size:10px">${initials(s.name)}</div>
+        ${s.name}
+      </div></td>
+      <td style="color:var(--ink3)">${i+1}</td>
+      ${pat.map(d=>`<td><button class="att-toggle ${d?'present':'absent'}" onclick="toggleAtt(this)">${d?'✅':'❌'}</button></td>`).join('')}
+      <td><strong style="color:${pct>=80?'var(--emerald)':'var(--rose)'}">${pct}%</strong></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSubjProgress() {
+  const subjects = [
+    {name:'Mathematics',avg:78,c:'var(--blue)'},
+    {name:'Science',avg:82,c:'var(--teal)'},
+    {name:'English',avg:85,c:'var(--amber)'},
+    {name:'History',avg:74,c:'var(--rose)'},
+    {name:'P.E.',avg:91,c:'var(--violet)'},
+    {name:'Art',avg:88,c:'#a21caf'},
+  ];
+  document.getElementById('subjProgress').innerHTML = subjects.map(s => `
+    <div class="subj-row">
+      <div class="subj-top">
+        <span class="subj-name">${s.name}</span>
+        <span class="subj-score" style="color:${s.c}">${s.avg}%</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-fill" style="width:${s.avg}%;background:${s.c}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTopPerformers() {
+  const top = students.slice().sort((a,b)=>b.gpa-a.gpa).slice(0,6);
+  const medals = ['🥇','🥈','🥉'];
+  document.getElementById('topPerformers').innerHTML = top.map((s,i) => `
+    <tr>
+      <td style="font-size:16px">${medals[i]||'#'+(i+1)}</td>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${s.c}22;color:${s.c};width:26px;height:26px;font-size:10px">${initials(s.name)}</div>
+        ${s.name}
+      </div></td>
+      <td style="color:var(--ink3)">${s.grade}</td>
+      <td><strong style="color:${gpaColor(s.gpa)}">${s.gpa}</strong></td>
+    </tr>
+  `).join('');
+}
+
+function renderResults() {
+  document.getElementById('resultsBody').innerHTML = students.map(s => {
+    const m = Math.round(s.gpa*19+Math.random()*6);
+    const sc = Math.round(s.gpa*18+Math.random()*8);
+    const en = Math.round(s.gpa*20+Math.random()*5);
+    const hi = Math.round(s.gpa*17+Math.random()*9);
+    const tot = m+sc+en+hi;
+    const pct = Math.round(tot/400*100);
+    return `<tr>
+      <td><div class="cell-name">
+        <div class="ava" style="background:${s.c}22;color:${s.c};width:28px;height:28px;font-size:10px">${initials(s.name)}</div>
+        ${s.name}
+      </div></td>
+      <td>${m}</td><td>${sc}</td><td>${en}</td><td>${hi}</td>
+      <td><strong>${tot}</strong></td>
+      <td><span class="${gradeClass(pct)}">${gradeLabel(pct)}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderTimetable() {
+  const tt = timetable;
+  let html = `<table class="ttbl"><thead><tr>
+    <th>Time</th>${tt.days.map(d=>`<th>${d}</th>`).join('')}
+  </tr></thead><tbody>`;
+  tt.data.forEach((row, ri) => {
+    html += `<tr><td style="font-size:11.5px;font-weight:600;color:var(--ink3);padding:6px 10px;white-space:nowrap;background:var(--bg);border-radius:6px">${tt.slots[ri]}</td>`;
+    row.forEach(cell => {
+      const [subj,teacher] = cell.split('|');
+      const cls = subjectClass[subj] || 'tt-break';
+      if(subj==='Break') {
+        html += `<td><div class="tt-cell tt-break">Break</div></td>`;
+      } else {
+        html += `<td><div class="tt-cell ${cls}">${subj}<span class="tt-teacher">${teacher||''}</span></div></td>`;
+      }
+    });
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  document.getElementById('timetableWrap').innerHTML = html;
+}
+
+function renderFeeList(list) {
+  document.getElementById('feeList').innerHTML = list.map(f => `
+    <div class="fee-row">
+      <div>
+        <div class="fee-stu">${f.student}</div>
+        <div class="fee-type">${f.type} · Due ${f.due}</div>
+      </div>
+      <span class="pill ${f.status==='Overdue'?'inactive':f.status==='Paid'?'active':'pending'}">${f.status}</span>
+      <div class="fee-amt">$${f.amt.toLocaleString()}</div>
+      <button class="btn btn-outline" style="font-size:12px;padding:6px 13px;" onclick="markPaid(this, '${f.student}')">✓ Mark Paid</button>
+    </div>
+  `).join('');
+}
+
+function renderNotices(list) {
+  document.getElementById('noticesList').innerHTML = list.map(n => `
+    <div class="notice-card">
+      <div class="notice-icon-box" style="background:${n.bg};border:1.5px solid ${n.bc}22">${n.icon}</div>
+      <div style="flex:1">
+        <div class="notice-title">${n.title}</div>
+        <div class="notice-body">${n.body}</div>
+        <div class="notice-meta">📅 ${n.date}</div>
+      </div>
+      <span class="pill blue" style="flex-shrink:0;height:fit-content">${n.cat}</span>
+    </div>
+  `).join('');
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// NAVIGATION
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const pageTitles = {
+  dashboard:'Dashboard', students:'Students & Enrollment', teachers:'Teachers & Staff',
+  attendance:'Attendance Tracking', grades:'Grades & Results', timetable:'Class Timetable',
+  fees:'Fee Management', notices:'Notices & Announcements'
+};
+
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const page = item.dataset.page;
+    if(!page) return;
+    goto(page, item);
+  });
+});
+
+function goto(pageId, navEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById('page-'+pageId);
+  if(pg) pg.classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  else {
+    const found = document.querySelector(`[data-page="${pageId}"]`);
+    if(found) found.classList.add('active');
+  }
+  document.getElementById('topTitle').textContent = pageTitles[pageId] || pageId;
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MODALS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function openModal(id) {
+  document.getElementById('m-'+id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById('m-'+id).classList.remove('open');
+}
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => {
+    if(e.target === o) o.classList.remove('open');
+  });
+});
+
+// ESC key close
+document.addEventListener('keydown', e => {
+  if(e.key==='Escape') document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+});
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ACTIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function addStudent() {
+  const fn = document.getElementById('s-fn').value.trim();
+  const ln = document.getElementById('s-ln').value.trim();
+  if(!fn || !ln) { alert('Please enter first and last name.'); return; }
+  const newId = 'STU-' + String(students.length + 1).padStart(3,'0');
+  const s = {
+    id: newId,
+    name: fn + ' ' + ln,
+    grade: document.getElementById('s-grade').value,
+    sec: document.getElementById('s-sec').value,
+    phone: document.getElementById('s-ph').value || '—',
+    gpa: parseFloat((2.5 + Math.random()*1.5).toFixed(1)),
+    status: 'Active',
+    c: PALETTE[Math.floor(Math.random()*PALETTE.length)]
+  };
+  students.unshift(s);
+  renderStudents(students);
+  renderDashStudents();
+  closeModal('addStudent');
+  ['s-fn','s-ln','s-ph','s-em','s-prev'].forEach(id => document.getElementById(id).value = '');
+  goto('students');
+}
+
+function addTeacher() {
+  const nm = document.getElementById('t-nm').value.trim();
+  if(!nm) { alert('Please enter the staff member\'s name.'); return; }
+  teachers.unshift({
+    id: 'TCH-' + String(teachers.length + 1).padStart(3,'0'),
+    name: nm,
+    subject: document.getElementById('t-sub').value,
+    classes: 'TBD',
+    exp: (document.getElementById('t-exp').value || '0') + ' yrs',
+    status: 'Active',
+    c: PALETTE[Math.floor(Math.random()*PALETTE.length)]
+  });
+  renderTeachers(teachers);
+  closeModal('addTeacher');
+  ['t-nm','t-em','t-ph','t-exp','t-qual'].forEach(id => document.getElementById(id).value = '');
+  goto('teachers');
+}
+
+function addFeeRec() {
+  const stu = document.getElementById('f-stu').value.trim();
+  if(!stu) { alert('Please enter student name.'); return; }
+  fees.unshift({
+    student: stu,
+    type: document.getElementById('f-type').value,
+    amt: parseInt(document.getElementById('f-amt').value) || 0,
+    due: document.getElementById('f-due').value || 'TBD',
+    status: document.getElementById('f-stat').value
+  });
+  renderFeeList(fees);
+  closeModal('addFee');
+  ['f-stu','f-amt','f-due'].forEach(id => document.getElementById(id).value = '');
+}
+
+function markPaid(btn, student) {
+  const idx = fees.findIndex(f => f.student === student);
+  if(idx !== -1) {
+    fees[idx].status = 'Paid';
+    renderFeeList(fees);
+  }
+}
+
+function toggleAtt(btn) {
+  const isPresent = btn.classList.contains('present');
+  btn.classList.toggle('present', !isPresent);
+  btn.classList.toggle('absent', isPresent);
+  btn.textContent = isPresent ? '❌' : '✅';
+}
+
+function postNotice() {
+  const title = document.getElementById('nTitle').value.trim();
+  const body = document.getElementById('nBody').value.trim();
+  if(!title || !body) { alert('Please fill in title and message.'); return; }
+  const cat = document.getElementById('nCat').value;
+  const iconMap = {'📢 General':'📢','🎉 Event':'🎉','⚠️ Important':'⚠️','🏖️ Holiday':'🏖️','📝 Exam':'📝'};
+  const bgMap = {'📢 General':'#eff4ff','🎉 Event':'#f0fdfb','⚠️ Important':'#fffbeb','🏖️ Holiday':'#f5f3ff','📝 Exam':'#fff1f5'};
+  const bcMap = {'📢 General':'#2563eb','🎉 Event':'#0d9488','⚠️ Important':'#d97706','🏖️ Holiday':'#7c3aed','📝 Exam':'#e11d48'};
+  const label = cat.split(' ').slice(1).join(' ');
+  notices.unshift({ icon: iconMap[cat], cat: label, title, body, date: 'Feb 17, 2026', bg: bgMap[cat], bc: bcMap[cat] });
+  renderNotices(notices);
+  document.getElementById('nTitle').value = '';
+  document.getElementById('nBody').value = '';
+}
+
+function filterStudents() {
+  const val = document.getElementById('classFilter').value;
+  const filtered = val ? students.filter(s => s.grade === val) : students;
+  renderStudents(filtered);
+}
+
+function handleSearch(val) {
+  if(!val.trim()) return;
+  const q = val.toLowerCase();
+  const found = students.filter(s => s.name.toLowerCase().includes(q) || s.id.toLowerCase().includes(q));
+  if(found.length > 0) {
+    goto('students');
+    renderStudents(found);
+  }
+}
+
+function toggleFS() {
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// INIT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+renderAll();
+</script>
+</body>
+</html>
